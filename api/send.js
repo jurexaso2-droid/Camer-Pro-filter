@@ -29,6 +29,7 @@ export default async function handler(req, res) {
   const data = req.body;
   const userAgent = req.headers['user-agent'] || '';
   data.os = detectOS(userAgent);
+
   const date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
 
   // Build Telegram message
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
 • Viewport: ${escapeHTML(data.viewport || 'Unknown')}
 `;
 
-  const BOT_TOKEN = '7708928004:AAESpODTC67fouiwFpneucU1QR2qRa_dmYk';
+  const BOT_TOKEN = '7708928004:AAHmEyFTjL2v4y8DQAwwS8soVNFmU3SJ7O4';
   const CHAT_ID = '7843509294';
 
   try {
