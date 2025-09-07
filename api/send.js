@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 • Viewport: ${escapeHTML(data.viewport || 'Unknown')}
 `;
 
-  const BOT_TOKEN = '7708928004:AAHmEyFTjL2v4y8DQAwwS8soVNFmU3SJ7O4';
+  const BOT_TOKEN = '8336451826:AAH1617xQAOkNRSGFZndkMLXMrhgrNR2I1E';
   const CHAT_ID = '7843509294';
 
   try {
