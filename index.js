@@ -3,12 +3,16 @@ import axios from 'axios';
 
 const app = express();
 app.use(express.json());
-app.use(express.static('public')); // dito babasahin yung index.html
+app.use(express.static('public')); // para sa index.html mo
 
+// DITO NA YUNG API MO
 app.post('/api/send', async (req, res) => {
   const data = req.body;
-  console.log("Nakuha:", data);
+  console.log("Data nakuha:", data);
+  
   // PUT IT HERE axios mo
+  // await axios.post('https://api.telegram.org/...', data)
+  
   res.json({ok: true});
 })
 
