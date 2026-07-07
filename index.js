@@ -11,7 +11,6 @@ app.post('/api/send', async (req, res) => {
   console.log("Data nakuha:", data);
   
   // PUT IT HERE axios mo
-  import axios from 'axios';
 
 // Detect OS from user-agent
 function detectOS(userAgent) {
